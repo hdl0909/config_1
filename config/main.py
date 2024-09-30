@@ -123,7 +123,7 @@ def rm(path_for_rm):
             if not file_exists:
                 return f"Файл {rm_file} не существует"
             if is_directory:
-                return f"{rm_file} является директорией, используйте другой метод для удаления директорий"
+                return f"{rm_file} является директорией"
         
             with tarfile.open(PATH, 'r') as source_tar:
                 with tarfile.open(temp_path, 'w') as temp:
