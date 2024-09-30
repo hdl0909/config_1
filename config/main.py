@@ -3,6 +3,7 @@ import os
 import json
 import datetime
 import random
+import keyboard
 
 USERNAME = "Danil"
 NAME_COMP = "Asus"
@@ -111,7 +112,7 @@ def rm(path_for_rm):
     file_exists = False
     is_directory = False
     
-    if rm_file != "Неправильно введен путь" and rm_file != "Вы в корневой папке":
+    if rm_file != "Неправильно введен путь" and rm_file != "Вы в корневой папке" and  rm_file != "root/":
         try:
             with tarfile.open(PATH, 'r') as source_tar:
                 for member in source_tar.getmembers():
@@ -123,7 +124,7 @@ def rm(path_for_rm):
             if not file_exists:
                 return f"Файл {rm_file} не существует"
             if is_directory:
-                return f"{rm_file} является директорией"
+                return f"{rm_file} является директорией, используйте другой метод для удаления директорий"
         
             with tarfile.open(PATH, 'r') as source_tar:
                 with tarfile.open(temp_path, 'w') as temp:
@@ -135,7 +136,13 @@ def rm(path_for_rm):
             return f"Файл {rm_file} удален"
         except FileNotFoundError:
             return "Файл не найден"
-    return "Неправильно введен путь" if rm_file == "Неправильно введен путь" else "Вы в корневой папке"
+    else:
+        if rm_file == "Неправильно введен путь":
+            return "Неправильно введен путь"
+        elif rm_file == "root/":
+            return "Не удаляйте корневую папку"
+        else:
+            return "Вы в корневой папке"
     
 def chmod(par_mode, par_path_file):
     if len(par_mode) != 3:
@@ -166,9 +173,22 @@ def app(command):
     if parts_command[0] == "ls":
         if len(parts_command) > 1:
             if parts_command[1] == "-l":
-                return ls(1, parts_command[2]) if len(parts_command) > 2 else ls(1)
+                if len(parts_command) > 2:
+                    # Перебираем несколько путей
+                    results = []
+                    for path_arg in parts_command[2:]:
+                        print(1)
+                        results.append(ls(1, path_arg))
+                    return "\n......\n".join(results)
+                else:
+                    return ls(1)
             else:
-                return ls(0, parts_command[1])
+                # Перебираем несколько путей
+                results = []
+                for path_arg in parts_command[1:]:
+                    print(1)
+                    results.append(ls(0, path_arg))
+                return "\n.....\n".join(results)
         else:
             return ls()
     elif parts_command[0] == "cd":
@@ -194,8 +214,11 @@ def main_loop():
     start_script()
     while True:
         command = input(USERNAME + "@" + NAME_COMP + ":" + current_path + "$ ")
+        command = command.strip()
         if command == "exit":
-            break
+            exit()
+        elif command == "":
+            continue
         result = app(command)
         print(result)
         
@@ -212,5 +235,6 @@ if __name__ == "__main__":
             }
         with open('mode.json', 'w') as file:
             json.dump(file_metadata, file)'''
+    keyboard.block_key('ctrl')
     main_loop()
     
