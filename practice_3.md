@@ -97,4 +97,109 @@ in {groups = groups, students = students, subject = subject}
 ![image](https://github.com/user-attachments/assets/478e7fe6-cc8c-46d3-aaae-48f0eca0ca02)
 ![image](https://github.com/user-attachments/assets/f6ab0e90-50f0-4aaa-98cd-f11912034321)
 ![image](https://github.com/user-attachments/assets/e33617b7-e3ad-4896-b814-e850c3c574b8)
-![Uploading image.png…]()
+![image](https://github.com/user-attachments/assets/7bcd6737-349d-4272-8ecd-14bba86e2147)
+```
+import random
+
+
+def parse_bnf(text):
+    '''
+    Преобразовать текстовую запись БНФ в словарь.
+    '''
+    grammar = {}
+    rules = [line.split('=') for line in text.strip().split('\n')]
+    for name, body in rules:
+        grammar[name.strip()] = [alt.split() for alt in body.split('|')]
+    return grammar
+
+
+def generate_phrase(grammar, start):
+    '''
+    Сгенерировать случайную фразу.
+    '''
+    if start in grammar:
+        seq = random.choice(grammar[start])
+        return ''.join([generate_phrase(grammar, name) for name in seq])
+    return str(start)
+
+
+BNF = '''
+E = 0 | 1 | E 0 | E 1
+'''
+
+for i in range(10):
+    print(generate_phrase(parse_bnf(BNF), 'E'))
+```
+![image](https://github.com/user-attachments/assets/784eaaff-9be3-4f88-a7de-4b43b77c31dc)
+![image](https://github.com/user-attachments/assets/4c79b4f9-d351-4ee4-86da-6855b433ddf5)
+
+**КОД:**
+```
+import random
+
+
+def parse_bnf(text):
+    '''
+    Преобразовать текстовую запись БНФ в словарь.
+    '''
+    grammar = {}
+    rules = [line.split('=') for line in text.strip().split('\n')]
+    for name, body in rules:
+        grammar[name.strip()] = [alt.split() for alt in body.split('|')]
+    return grammar
+
+
+def generate_phrase(grammar, start):
+    '''
+    Сгенерировать случайную фразу.
+    '''
+    if start in grammar:
+        seq = random.choice(grammar[start])
+        return ''.join([generate_phrase(grammar, name) for name in seq])
+    return str(start)
+
+
+BNF = '''
+E =  ( E ) | { E } | 
+'''
+
+for i in range(10):
+    print(generate_phrase(parse_bnf(BNF), 'E'))
+```
+![image](https://github.com/user-attachments/assets/da30dd8d-f84d-46c8-9284-eb6083d96e1f)
+![image](https://github.com/user-attachments/assets/e0bcd784-f940-4104-879b-602e3ffc9170)
+```
+import random
+
+
+def parse_bnf(text):
+    '''
+    Преобразовать текстовую запись БНФ в словарь.
+    '''
+    grammar = {}
+    rules = [line.split('=') for line in text.strip().split('\n')]
+    for name, body in rules:
+        grammar[name.strip()] = [alt.split() for alt in body.split('|')]
+    return grammar
+
+
+def generate_phrase(grammar, start):
+    '''
+    Сгенерировать случайную фразу.
+    '''
+    if start in grammar:
+        seq = random.choice(grammar[start])
+        return ''.join([generate_phrase(grammar, name) for name in seq])
+    return start
+
+
+BNF = '''
+E = T | E l T
+T = F | T & F
+F = x | y | ~ F | ( F )
+'''
+
+for i in range(10):
+    print(generate_phrase(parse_bnf(BNF), 'E'))
+```
+![image](https://github.com/user-attachments/assets/e06b6f61-ff4f-4d73-90eb-d23cbde2b107)
