@@ -177,7 +177,6 @@ def app(command):
                     # Перебираем несколько путей
                     results = []
                     for path_arg in parts_command[2:]:
-                        print(1)
                         results.append(ls(1, path_arg))
                     return "\n......\n".join(results)
                 else:
@@ -186,7 +185,6 @@ def app(command):
                 # Перебираем несколько путей
                 results = []
                 for path_arg in parts_command[1:]:
-                    print(1)
                     results.append(ls(0, path_arg))
                 return "\n.....\n".join(results)
         else:
